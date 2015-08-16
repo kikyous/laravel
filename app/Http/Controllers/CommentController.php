@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Topic;
 use App\Comment;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class TopicController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +17,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics = Topic::all();
-        return view('topic.index', ['topics' => $topics]);
+        //
     }
 
     /**
@@ -29,7 +27,7 @@ class TopicController extends Controller
      */
     public function create()
     {
-        return view('topic.create')->withTopic(new Topic);;
+        //
     }
 
     /**
@@ -40,13 +38,11 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-      $topic = new Topic;
-      $topic->title = $request->input('title');
-      $topic->content = $request->input('content');
-      $topic->user_id = 1;//Auth::user()->id;
+      $comment = new Comment($request->all());
+      $comment->user_id = 1;//Auth::user()->id;
 
-      if ($topic->save()) {
-        return redirect('topic');
+      if ($comment->save()) {
+        return redirect()->back();
       } else {
         return redirect()->back()->withInput();
       }
@@ -60,11 +56,7 @@ class TopicController extends Controller
      */
     public function show($id)
     {
-      $topic = Topic::findOrFail($id);
-      return view('topic.show')
-        ->with('topic', $topic)
-        ->with('comments', $topic->comments)
-        ->with('comment', new Comment(['topic_id' => $id]));
+        //
     }
 
     /**
@@ -75,7 +67,7 @@ class TopicController extends Controller
      */
     public function edit($id)
     {
-        return view('topic.create')->withTopic(Topic::findOrFail($id));
+        //
     }
 
     /**
@@ -87,14 +79,7 @@ class TopicController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $topic = Topic::findOrFail($id);
-      $input = array_except($request->input(), '_method');
-
-      if ($topic->update($input)) {
-        return redirect('topic');
-      } else {
-        return redirect()->back()->withInput();
-      }
+        //
     }
 
     /**

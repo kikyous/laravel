@@ -27,3 +27,4 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::resource('topic', 'TopicController');
+Route::resource('comment', 'CommentController');
