@@ -13,11 +13,14 @@
   <ul class="list-group">
     @foreach ($topics as $topic)
       <li class="list-group-item">
-        {{ $topic->title }}
-        <div class="btn-group pull-right" role="group" aria-label="...">
-          <a href="{{ URL::route('topic.edit', $topic->id) }}" class='btn btn-default btn-xs'>Edit</a>
+        <div class="btn-group hide actions" role="group" aria-label="...">
+          <a href="{{ URL::route('topic.edit', $topic->id) }}">
+            <i class="fa fa-pencil-square-o"> </i>
+          </a>
         </div>
-        <div class='clearfix'></div>
+        <a href="{{ URL::route('topic.show', $topic->id) }}">
+          {{ $topic->title }}
+        </a>
       </li>
     @endforeach
   </ul>

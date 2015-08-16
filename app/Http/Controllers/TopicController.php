@@ -59,7 +59,7 @@ class TopicController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('topic.show')->withTopic(Topic::findOrFail($id));
     }
 
     /**
