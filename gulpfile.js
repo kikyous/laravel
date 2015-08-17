@@ -15,5 +15,10 @@ elixir(function(mix) {
     mix.sass('app.scss');
 });
 elixir(function(mix) {
-    mix.copy('node_modules/font-awesome/fonts', 'public/fonts');
+  mix.copy('node_modules/vue/dist/vue.js', 'resources/assets/js');
+  mix.scripts([
+      'vue.js',
+      'app.js'
+  ]);
+  mix.copy('node_modules/font-awesome/fonts', 'public/fonts');
 });
