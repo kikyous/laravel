@@ -17,12 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @if(Auth::guest())
-                    <a class="navbar-brand" href="/">学生成绩管理</a>
-                @else
-                        <a class="navbar-brand" href="/">学生成绩管理</a>
-                @endif
-
+                <a class="navbar-brand" href="/">Lower</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

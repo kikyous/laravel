@@ -16,10 +16,14 @@ class TopicController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $topics = Topic::all();
+      $topics = Topic::all();
+      if ($request->format() != 'html'){
+        return $topics;
+      } else{
         return view('topic.index', ['topics' => $topics]);
+      }
     }
 
     /**
@@ -42,7 +46,6 @@ class TopicController extends Controller
     {
       $topic = new Topic;
       $topic->title = $request->input('title');
-      $topic->content = $request->input('content');
       $topic->user_id = 1;//Auth::user()->id;
 
       if ($topic->save()) {
