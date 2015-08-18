@@ -14,40 +14,43 @@ Vue.component('topic', {
       isEdit: false,
       topic: {
         title: '',
-        id: ''
+        id: '',
+        status: 0
       }
     }
   },
   template: '#topic',
   methods: {
+    toggleStatus: function(){
+      this.topic.status = this.topic.status ? 0 : 1;
+      this.create_or_update().done(function(){
+      });
+    },
     edit: function(topic){
       this.isEdit = true;
+    },
+    create_or_update: function(){
+      return $.ajax({
+        url: '/topic/' + this.topic.id,
+        method:  this.topic.id ? 'PUT' : 'POST',
+        data: this.topic
+      })
     }
   },
   components: {
     'topic-edit': {
-      props: ['topic', 'isEdit'],
-      data: function(){
-        return {
-          isEdit: false,
-          newTopic: {
-            title: ''
-          },
-          topic: {
-            title: '',
-            id: ''
-          }
-        }
-      },
+      inherit: true,
       template: "#form",
       ready: function(){
         console.log('edit ready');
-        this.newTopic.title = this.topic.title;
+        console.log(this.topic.title);
+        this.old_title = this.topic.title;
       },
       methods: {
         cancel: function(e){
           e.preventDefault();
           if(this.topic.id){
+            this.topic.title = this.old_title;
             this.isEdit = false;
           }else{
             vm.new = false;
@@ -55,11 +58,7 @@ Vue.component('topic', {
         },
         submit: function(e){
           e.preventDefault();
-          $.ajax({
-            url: '/topic/' + this.topic.id,
-            method:  this.topic.id ? 'PUT' : 'POST',
-            data: this.newTopic
-          }).done(function(data){
+          this.create_or_update().done(function(data){
             if(this.topic.id){
               this.isEdit = false;
               this.topic.title = data.title;
@@ -82,7 +81,8 @@ var vm = new Vue({
     this.getTopics();
   },
   methods: {
-    add: function(){
+    add: function(e){
+      e.preventDefault();
       vm.$.newTopic.isEdit = true;
     },
     getTopics: function(){

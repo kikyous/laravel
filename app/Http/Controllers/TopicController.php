@@ -18,7 +18,7 @@ class TopicController extends Controller
      */
     public function index(Request $request)
     {
-      $topics = Topic::all();
+      $topics = Topic::orderBy('status', 'asc')->orderBy('sorter', 'desc')->get();
       if ($request->format() != 'html'){
         return $topics;
       } else{

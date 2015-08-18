@@ -4,21 +4,24 @@
 
 <script type="text/x-template" id="form">
 <form v-on='submit: submit' action='/topic/@{{topic.id}}' method='POST'>
-  <input v-model='newTopic.title' name='title'>
+  <input v-model='topic.title' name='title'>
   <button type='submit' class='btn btn-success btn-xs'>Save</button>
-  <a href='#' v-on='click: cancel' class='btn-cancel'>取消</a>
+  <a href='#' v-on='click: cancel' class='btn-cancel'>Cancel</a>
 </form>
 </script>
 
 <script type="text/x-template" id="topic">
-<li class="list-group-item">
-  <div v-if='!isEdit' class="content">
-    <div class="btn-group hide actions" role="group" aria-label="...">
-       <i v-on='click: edit(topic)' class="fa fa-pencil-square-o"> </i>
+<li class="list-group-item @{{topic.status == 1 && 'list-group-item-success' }}">
+  <div v-if='!isEdit' class="container">
+    <div class="actions">
+      <div class="inr">
+         <i v-on='click: edit(topic)' class="fa fa-pencil-square-o"> </i>
+      </div>
     </div>
+    <i v-on='click: toggleStatus' class="fa @{{topic.status ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
     <a href="/topic/@{{topic.id}}">@{{ topic.title }}</a>
   </div>
-  <topic-edit v-show='isEdit' topic='@{{topic}}' is-edit="@{{@ isEdit}}"></topic-edit>
+  <topic-edit v-if='isEdit'></topic-edit>
 </li>
 </script>
 <div class="panel panel-default" id='topics'>
