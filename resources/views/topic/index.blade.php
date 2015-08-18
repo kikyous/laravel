@@ -4,9 +4,9 @@
 
 <script type="text/x-template" id="form">
 <form v-on='submit: submit' action='/topic/@{{topic.id}}' method='POST'>
-  <input v-model='title' name='title'>
+  <input v-model='newTopic.title' name='title'>
   <button type='submit' class='btn btn-success btn-xs'>Save</button>
-  <a href='#' v-on='click: isEdit=false' class='btn-cancel'>取消</a>
+  <a href='#' v-on='click: cancel' class='btn-cancel'>取消</a>
 </form>
 </script>
 
@@ -18,10 +18,10 @@
     </div>
     <a href="/topic/@{{topic.id}}">@{{ topic.title }}</a>
   </div>
-  <topic-edit v-if='isEdit' topic='@{{topic}}' is-edit="@{{@ isEdit}}"></topic-edit>
+  <topic-edit v-show='isEdit' topic='@{{topic}}' is-edit="@{{@ isEdit}}"></topic-edit>
 </li>
 </script>
-<div class="panel panel-default">
+<div class="panel panel-default" id='topics'>
   <!-- Default panel contents -->
   <div class="panel-heading">
   Panel heading
@@ -30,8 +30,12 @@
   <div class="panel-body">
     <p>...</p>
   </div>
-  <ul class="list-group" id='topics'>
+  <ul class="list-group" id=''>
     <topic v-repeat='topic in topics'></topic>
+    <topic v-ref="newTopic" v-if='new' is-edit='true'></topic>
   </ul>
+  <div class="panel-footer">
+    <a href="#" v-on='click: new=true'>Add a todo</a>
+  </div>
 </div>
 @endsection

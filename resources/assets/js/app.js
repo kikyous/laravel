@@ -4,13 +4,17 @@ $.ajaxSetup({
   }
 });
 $(function(){
+Vue.component('list', {
+
+});
 Vue.component('topic', {
-  props: ['topic'],
+  props: ['topic', 'isEdit'],
   data: function(){
     return {
       isEdit: false,
       topic: {
-        title: ''
+        title: '',
+        id: ''
       }
     }
   },
@@ -30,41 +34,57 @@ Vue.component('topic', {
             title: ''
           },
           topic: {
-            title: ''
+            title: '',
+            id: ''
           }
         }
       },
       template: "#form",
+      ready: function(){
+        console.log('edit ready');
+        this.newTopic.title = this.topic.title;
+      },
       methods: {
+        cancel: function(e){
+          e.preventDefault();
+          if(this.topic.id){
+            this.isEdit = false;
+          }else{
+            vm.new = false;
+          }
+        },
         submit: function(e){
           e.preventDefault();
-          // $.ajax();
-          this.isEdit = true;
-          console.log(this.newTopic.title);
+          $.ajax({
+            url: '/topic/' + this.topic.id,
+            method:  this.topic.id ? 'PUT' : 'POST',
+            data: this.newTopic
+          }).done(function(data){
+            if(this.topic.id){
+              this.isEdit = false;
+              this.topic.title = data.title;
+            }else{
+              vm.topics.push(data);
+            }
+          }.bind(this));
         }
       },
-      computed: {
-        title: {
-          get: function(){
-            return this.topic.title;
-          },
-          set: function(value){
-            this.newTopic.title = value;
-          }
-        }
-      }
     }
   }
 });
 var vm = new Vue({
   el: '#topics',
   data: {
-    topics: [{title: ''}]
+    topics: [{title: ''}],
+    new: false
   },
   ready: function(){
     this.getTopics();
   },
   methods: {
+    add: function(){
+      vm.$.newTopic.isEdit = true;
+    },
     getTopics: function(){
       $.getJSON('/topic', function(data){
         console.log(data);

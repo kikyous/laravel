@@ -49,9 +49,9 @@ class TopicController extends Controller
       $topic->user_id = 1;//Auth::user()->id;
 
       if ($topic->save()) {
-        return redirect('topic');
+        return $topic;
       } else {
-        return redirect()->back()->withInput();
+        return $errors;
       }
     }
 
@@ -94,9 +94,9 @@ class TopicController extends Controller
       $input = array_except($request->input(), '_method');
 
       if ($topic->update($input)) {
-        return redirect('topic');
+        return $topic;
       } else {
-        return redirect()->back()->withInput();
+        return $errors;
       }
     }
 
