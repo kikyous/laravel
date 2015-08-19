@@ -28,7 +28,7 @@
 <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading">
-  Panel heading
+  @{{ name }}
   <a href="{{ URL::route('topic.create') }}" class='pull-right btn btn-success btn-xs'>Create</a>
   </div>
   <div class="panel-body">
@@ -36,7 +36,7 @@
   </div>
   <ul class="list-group" id=''>
     <topic v-repeat='topic in topics'></topic>
-    <topic v-ref="newTopic" v-if='new' is-edit='true'></topic>
+    <topic v-ref="newTopic" v-if='new' is-edit='true' create-topic='@{{createTopic}}'></topic>
   </ul>
   <div class="panel-footer">
     <a href="#" v-on='click: new=true'>Add a todo</a>
@@ -46,5 +46,6 @@
 
 <div id="index">
   <button v-on='click: newList' class="btn btn-success">Add Todo List</button>
+  <list v-repeat='project.lists'></list>
 </div>
 @endsection
