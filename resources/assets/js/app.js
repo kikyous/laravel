@@ -5,7 +5,18 @@ $.ajaxSetup({
 });
 $(function(){
 Vue.component('list', {
-
+  data: function(){
+    return {
+      topics: [{title: ''}],
+      new: false
+    }
+  },
+  methods: {
+    add: function(e){
+      e.preventDefault();
+      vm.$.newTopic.isEdit = true;
+    },
+  },
 });
 Vue.component('topic', {
   props: ['topic', 'isEdit'],
@@ -71,26 +82,21 @@ Vue.component('topic', {
     }
   }
 });
+
 var vm = new Vue({
-  el: '#topics',
+  el: '#index',
   data: {
-    topics: [{title: ''}],
-    new: false
   },
   ready: function(){
-    this.getTopics();
+    this.getList();
   },
   methods: {
-    add: function(e){
-      e.preventDefault();
-      vm.$.newTopic.isEdit = true;
-    },
-    getTopics: function(){
-      $.getJSON('/topic', function(data){
+    getList: function(){
+      $.getJSON('/project/1', function(data){
         console.log(data);
         vm.$set('topics', data);
       })
     }
-  },
+  }
 })
 });

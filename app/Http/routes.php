@@ -26,5 +26,7 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
+Route::resource('project', 'ProjectController');
+Route::resource('list', 'ListController');
 Route::resource('topic', 'TopicController');
 Route::resource('comment', 'CommentController');

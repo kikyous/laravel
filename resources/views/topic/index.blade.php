@@ -24,7 +24,8 @@
   <topic-edit v-if='isEdit'></topic-edit>
 </li>
 </script>
-<div class="panel panel-default" id='topics'>
+<script type="text/x-template" id="list">
+<div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading">
   Panel heading
@@ -40,5 +41,10 @@
   <div class="panel-footer">
     <a href="#" v-on='click: new=true'>Add a todo</a>
   </div>
+</div>
+</script>
+
+<div id="index">
+  <button v-on='click: newList' class="btn btn-success">Add Todo List</button>
 </div>
 @endsection
