@@ -3,7 +3,7 @@
 @section('content')
 
 <script type="text/x-template" id="form">
-<form v-on='submit: submit' action='/topic/@{{topic.id}}' method='POST'>
+<form v-on='submit: submit'>
   <input v-model='topic.title' name='title'>
   <button type='submit' class='btn btn-success btn-xs'>Save</button>
   <a href='#' v-on='click: cancel' class='btn-cancel'>Cancel</a>
@@ -11,7 +11,7 @@
 </script>
 
 <script type="text/x-template" id="topic">
-<li class="list-group-item @{{topic.status == 1 && 'list-group-item-success' }}">
+<li class="with_actions list-group-item @{{topic.status == 1 && 'list-group-item-success' }}">
   <div v-if='!isEdit' class="container">
     <div class="actions">
       <div class="inr">
@@ -27,24 +27,27 @@
 <script type="text/x-template" id="list">
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading">
+  <div class="with_actions panel-heading">
+    <div class="actions">
+      <div class="inr">
+         <i v-on='click: edit' class="fa fa-pencil-square-o"> </i>
+      </div>
+    </div>
   @{{ name }}
-  <a href="{{ URL::route('topic.create') }}" class='pull-right btn btn-success btn-xs'>Create</a>
+  <input type="text" v-if='editing' name='name' v-model='name'>
   </div>
-  <div class="panel-body">
-    <p>...</p>
-  </div>
-  <ul class="list-group" id=''>
+  <ul class="list-group">
     <topic v-repeat='topic in topics'></topic>
-    <topic v-ref="newTopic" v-if='new' is-edit='true' create-topic='@{{createTopic}}'></topic>
+    <topic v-if='new' is-edit='true' create-topic='@{{createTopic}}' new='@{{@ new}}'></topic>
   </ul>
   <div class="panel-footer">
-    <a href="#" v-on='click: new=true'>Add a todo</a>
+    <a href="#" v-on='click: add'>Add a todo</a>
   </div>
 </div>
 </script>
 
 <div id="index">
+  <list></list>
   <button v-on='click: newList' class="btn btn-success">Add Todo List</button>
   <list v-repeat='project.lists'></list>
 </div>

@@ -4,19 +4,10 @@
 .actions{
   position: absolute;
   left: -30px;
-  top: 5px;
+  top: 8px;
   width: 30px;
   display: none;
   z-index: 95;
-}
-.list-group-item:hover .actions{
-  display: block;
-}
-.list-group-item{
-  font-size: 19px;
-  i{
-    cursor: pointer;
-  }
 }
 .actions .inr {
   float: right;
@@ -24,4 +15,15 @@
   background-color: #fff;
   border-radius: 10px 0 0 10px;
   box-shadow: -1px 0 1px rgba(0,0,0,0.2);
+}
+
+.with_actions:hover .actions{
+  display: block;
+}
+.with_actions{
+  position: relative;
+  font-size: 19px;
+  i{
+    cursor: pointer;
+  }
 }

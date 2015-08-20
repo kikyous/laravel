@@ -6,13 +6,13 @@ $.ajaxSetup({
 $(function(){
 
 var topic_component = {
-  props: ['topic', 'isEdit', 'createTopic'],
+  props: ['topic', 'isEdit', 'createTopic', 'new'],
   data: function(){
     return {
       isEdit: false,
       topic: {
         title: '',
-        id: '',
+        id: null,
         status: 0
       }
     }
@@ -24,13 +24,13 @@ var topic_component = {
   methods: {
     toggleStatus: function(){
       this.topic.status = this.topic.status ? 0 : 1;
-      this.create_or_update().done(function(){
+      this.update().done(function(){
       });
     },
     edit: function(topic){
       this.isEdit = true;
     },
-    create_or_update: function(){
+    update: function(){
       return $.ajax({
         url: '/topic/' + this.topic.id,
         method:  this.topic.id ? 'PUT' : 'POST',
@@ -43,8 +43,6 @@ var topic_component = {
       inherit: true,
       template: "#form",
       ready: function(){
-        console.log('edit ready');
-        console.log(this.topic.title);
         this.old_title = this.topic.title;
       },
       methods: {
@@ -54,19 +52,19 @@ var topic_component = {
             this.topic.title = this.old_title;
             this.isEdit = false;
           }else{
-            vm.new = false;
+            this.new = false;
           }
         },
         submit: function(e){
           e.preventDefault();
-          this.create_or_update().done(function(data){
-            if(this.topic.id){
+          if(this.topic.id){
+            this.update().done(function(data){
               this.isEdit = false;
               this.topic.title = data.title;
-            }else{
-              this.createTopic(data);
-            }
-          }.bind(this));
+            }.bind(this));
+          } else {
+            this.createTopic(this.topic);
+          }
         }
       },
     }
@@ -77,17 +75,30 @@ Vue.component('list', {
   props: ['topics', 'name'],
   data: function(){
     return {
+      id: null,
       topics: [],
+      editing: false,
       new: false
     }
   },
   methods: {
     add: function(e){
       e.preventDefault();
-      vm.$.newTopic.isEdit = true;
+      this.new = true;
+    },
+    edit: function(){
+      this.editing = true;
+
     },
     createTopic: function(data){
-      this.topics.push(data);
+      data['lists_id'] = this.id;
+      return $.ajax({
+        url: '/topic/',
+        method: 'POST',
+        data: data
+      }).done(function(data){
+        this.topics.push(data);
+      }.bind(this))
     }
   },
   components: {
@@ -104,6 +115,9 @@ vm = new Vue({
     this.getList();
   },
   methods: {
+    newList: function(){
+
+    },
     getList: function(){
       $.getJSON('/project/1', function(data){
         console.log(data);

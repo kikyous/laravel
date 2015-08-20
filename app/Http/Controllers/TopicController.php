@@ -44,9 +44,7 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-      $topic = new Topic;
-      $topic->title = $request->input('title');
-      $topic->user_id = 1;//Auth::user()->id;
+      $topic = new Topic($request->all());
 
       if ($topic->save()) {
         return $topic;
