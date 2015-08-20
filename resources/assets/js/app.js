@@ -6,11 +6,11 @@ $.ajaxSetup({
 $(function(){
 
 var topic_component = {
-  props: ['topic', 'isEdit', 'createTopic', 'new'],
+  props: ['detail', 'editing', 'create', 'new'],
   data: function(){
     return {
-      isEdit: false,
-      topic: {
+      editing: false,
+      detail: {
         title: '',
         id: null,
         status: 0
@@ -19,51 +19,51 @@ var topic_component = {
   },
   template: '#topic',
   ready: function(){
-    console.log(this.createTopic);
+    console.log(this.create);
   },
   methods: {
     toggleStatus: function(){
-      this.topic.status = this.topic.status ? 0 : 1;
+      this.detail.status = this.detail.status ? 0 : 1;
       this.update().done(function(){
       });
     },
     edit: function(topic){
-      this.isEdit = true;
+      this.editing = true;
     },
     update: function(){
       return $.ajax({
-        url: '/topic/' + this.topic.id,
-        method:  this.topic.id ? 'PUT' : 'POST',
-        data: this.topic
+        url: '/topic/' + this.detail.id,
+        method:  this.detail.id ? 'PUT' : 'POST',
+        data: this.detail
       })
     }
   },
   components: {
-    'topic-edit': {
+    editor: {
       inherit: true,
       template: "#form",
       ready: function(){
-        this.old_title = this.topic.title;
+        this.old_title = this.detail.title;
       },
       methods: {
         cancel: function(e){
           e.preventDefault();
-          if(this.topic.id){
-            this.topic.title = this.old_title;
-            this.isEdit = false;
+          if(this.detail.id){
+            this.detail.title = this.old_title;
+            this.editing = false;
           }else{
             this.new = false;
           }
         },
         submit: function(e){
           e.preventDefault();
-          if(this.topic.id){
+          if(this.detail.id){
             this.update().done(function(data){
-              this.isEdit = false;
-              this.topic.title = data.title;
+              this.editing = false;
+              this.detail.title = data.title;
             }.bind(this));
           } else {
-            this.createTopic(this.topic);
+            this.create(this.detail);
           }
         }
       },
@@ -90,7 +90,7 @@ Vue.component('list', {
       this.editing = true;
 
     },
-    createTopic: function(data){
+    createItem: function(data){
       data['lists_id'] = this.id;
       return $.ajax({
         url: '/topic/',

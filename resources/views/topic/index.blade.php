@@ -4,29 +4,28 @@
 
 <script type="text/x-template" id="form">
 <form v-on='submit: submit'>
-  <input v-model='topic.title' name='title'>
+  <input v-model='detail.title' name='title'>
   <button type='submit' class='btn btn-success btn-xs'>Save</button>
   <a href='#' v-on='click: cancel' class='btn-cancel'>Cancel</a>
 </form>
 </script>
 
 <script type="text/x-template" id="topic">
-<li class="with_actions list-group-item @{{topic.status == 1 && 'list-group-item-success' }}">
-  <div v-if='!isEdit' class="container">
+<li class="with_actions list-group-item @{{detail.status === 1 && 'list-group-item-success' }}">
+  <div v-if='!editing' class="container">
     <div class="actions">
       <div class="inr">
-         <i v-on='click: edit(topic)' class="fa fa-pencil-square-o"> </i>
+         <i v-on='click: edit(detail)' class="fa fa-pencil-square-o"> </i>
       </div>
     </div>
-    <i v-on='click: toggleStatus' class="fa @{{topic.status ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
-    <a href="/topic/@{{topic.id}}">@{{ topic.title }}</a>
+    <i v-on='click: toggleStatus' class="fa @{{detail.status ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
+    <a href="/topic/@{{detail.id}}">@{{ detail.title }}</a>
   </div>
-  <topic-edit v-if='isEdit'></topic-edit>
+  <editor v-if='editing'></editor>
 </li>
 </script>
 <script type="text/x-template" id="list">
 <div class="panel panel-default">
-  <!-- Default panel contents -->
   <div class="with_actions panel-heading">
     <div class="actions">
       <div class="inr">
@@ -37,8 +36,8 @@
   <input type="text" v-if='editing' name='name' v-model='name'>
   </div>
   <ul class="list-group">
-    <topic v-repeat='topic in topics'></topic>
-    <topic v-if='new' is-edit='true' create-topic='@{{createTopic}}' new='@{{@ new}}'></topic>
+    <topic v-repeat='detail in topics'></topic>
+    <topic v-if='new' editing='true' create='@{{createItem}}' new='@{{@ new}}'></topic>
   </ul>
   <div class="panel-footer">
     <a href="#" v-on='click: add'>Add a todo</a>
@@ -47,8 +46,8 @@
 </script>
 
 <div id="index">
-  <list></list>
   <button v-on='click: newList' class="btn btn-success">Add Todo List</button>
+  <list></list>
   <list v-repeat='project.lists'></list>
 </div>
 @endsection
