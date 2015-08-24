@@ -16,7 +16,7 @@ class CreateTopicsTable extends Migration
             $table->increments('id');
             $table->tinyInteger('status');
             $table->float('sorter');
-            $table->string('title');
+            $table->string('name');
             $table->integer('user_id')->unsigned();
             $table->integer('lists_id');
             $table->timestamps();

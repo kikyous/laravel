@@ -11,7 +11,7 @@ var topic_component = {
     return {
       editing: false,
       detail: {
-        title: '',
+        name: '',
         id: null,
         status: 0
       }
@@ -43,13 +43,13 @@ var topic_component = {
       inherit: true,
       template: "#form",
       ready: function(){
-        this.old_title = this.detail.title;
+        this.old_name = this.detail.name;
       },
       methods: {
         cancel: function(e){
           e.preventDefault();
           if(this.detail.id){
-            this.detail.title = this.old_title;
+            this.detail.name = this.old_name;
             this.editing = false;
           }else{
             this.new = false;
@@ -60,7 +60,7 @@ var topic_component = {
           if(this.detail.id){
             this.update().done(function(data){
               this.editing = false;
-              this.detail.title = data.title;
+              this.detail.name = data.name;
             }.bind(this));
           } else {
             this.create(this.detail);
