@@ -4,7 +4,7 @@
 
 <script type="text/x-template" id="form">
 <form v-on='submit: submit'>
-  <input v-model='detail.name' name='name'>
+  <input v-model='detail.name'>
   <button type='submit' class='btn btn-success btn-xs'>Save</button>
   <a href='#' v-on='click: cancel' class='btn-cancel'>Cancel</a>
 </form>
@@ -18,7 +18,7 @@
          <i v-on='click: edit(detail)' class="fa fa-pencil-square-o"> </i>
       </div>
     </div>
-    <i v-on='click: toggleStatus' class="fa @{{detail.status ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
+    <i v-on='click: toggleStatus' class="fa @{{detail.status === 1 ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
     <a href="/topic/@{{detail.id}}">@{{ detail.name }}</a>
   </div>
   <editor v-if='editing'></editor>

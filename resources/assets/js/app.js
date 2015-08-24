@@ -5,7 +5,7 @@ $.ajaxSetup({
 });
 $(function(){
 
-var topic_component = {
+var Topic = Vue.extend({
   props: ['detail', 'editing', 'create', 'new'],
   data: function(){
     return {
@@ -15,7 +15,7 @@ var topic_component = {
         id: null,
         status: 0
       }
-    }
+    };
   },
   template: '#topic',
   ready: function(){
@@ -35,7 +35,7 @@ var topic_component = {
         url: '/topic/' + this.detail.id,
         method:  this.detail.id ? 'PUT' : 'POST',
         data: this.detail
-      })
+      });
     }
   },
   components: {
@@ -69,7 +69,7 @@ var topic_component = {
       },
     }
   }
-};
+});
 Vue.component('list', {
   template: "#list",
   props: ['topics', 'name'],
@@ -79,7 +79,7 @@ Vue.component('list', {
       topics: [],
       editing: false,
       new: false
-    }
+    };
   },
   methods: {
     add: function(e){
@@ -91,18 +91,18 @@ Vue.component('list', {
 
     },
     createItem: function(data){
-      data['lists_id'] = this.id;
+      data.lists_id = this.id;
       return $.ajax({
         url: '/topic/',
         method: 'POST',
         data: data
       }).done(function(data){
         this.topics.push(data);
-      }.bind(this))
+      }.bind(this));
     }
   },
   components: {
-    topic: topic_component
+    topic: Topic
   }
 });
 
@@ -122,8 +122,8 @@ vm = new Vue({
       $.getJSON('/project/1', function(data){
         console.log(data);
         vm.$set('project', data);
-      })
+      });
     }
   }
-})
+});
 });
