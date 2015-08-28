@@ -14,40 +14,5 @@
 </template>
 
 <script>
-  module.exports = {
-    props: ['detail', 'editing', 'create', 'new'],
-    data: function(){
-      return {
-        editing: false,
-        detail: {
-          name: '',
-          id: null,
-          status: 0
-        }
-      };
-    },
-    components:{
-      editor: require('./editor.vue')
-    },
-    ready: function(){
-      console.log(this.create);
-    },
-    methods: {
-      toggleStatus: function(){
-        this.detail.status = this.detail.status ? 0 : 1;
-        this.update().done(function(){
-        });
-      },
-      edit: function(topic){
-        this.editing = true;
-      },
-      update: function(){
-        return $.ajax({
-          url: '/topic/' + this.detail.id,
-          method:  this.detail.id ? 'PUT' : 'POST',
-          data: this.detail
-        });
-      }
-    }
-  }
+  module.exports = require('./editable.vue')();
 </script>

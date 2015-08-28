@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lists extends Model
 {
+  protected $fillable = ['project_id', 'name'];
   public function topics()
     {
         return $this->hasMany('App\Topic');

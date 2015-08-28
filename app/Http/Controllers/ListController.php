@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Lists;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -71,7 +72,14 @@ class ListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $topic = Lists::findOrFail($id);
+      $input = array_except($request->input(), '_method');
+
+      if ($topic->update($input)) {
+        return $topic;
+      } else {
+        return $errors;
+      }
     }
 
     /**
